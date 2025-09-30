@@ -1,4 +1,5 @@
 import React from 'react';
+import { supabase, type ContactSubmission } from './lib/supabase';
 import { 
   Calendar,
   CheckCircle,
@@ -33,6 +34,8 @@ import {
 
 function App() {
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [submitMessage, setSubmitMessage] = React.useState('');
 
   const testimonials = [
     {
@@ -77,6 +80,39 @@ function App() {
     const interval = setInterval(nextTestimonial, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    const formData = new FormData(e.currentTarget);
+    const submission: Omit<ContactSubmission, 'id' | 'created_at'> = {
+      full_name: formData.get('fullName') as string,
+      email: formData.get('email') as string,
+      company_name: formData.get('companyName') as string || undefined,
+      industry: formData.get('industry') as string || undefined,
+      biggest_challenge: formData.get('biggestChallenge') as string,
+      timeline: formData.get('timeline') as string || undefined,
+    };
+
+    try {
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([submission]);
+
+      if (error) throw error;
+
+      setSubmitMessage('Thank you! Your strategy call request has been submitted. I\'ll reach out within 24 hours.');
+      (e.target as HTMLFormElement).reset();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitMessage('Sorry, there was an error submitting your request. Please try again or contact me directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -762,13 +798,15 @@ function App() {
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Book Your Free Strategy Call</h3>
               <p className="text-gray-600 mb-8">Fill out this form and I'll personally reach out within 24 hours</p>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleFormSubmit}>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                     <input 
                       type="text" 
+                      name="fullName"
                       placeholder="Your full name"
+                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -776,7 +814,9 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                     <input 
                       type="email" 
+                      name="email"
                       placeholder="you@email.com"
+                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -787,13 +827,14 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
                     <input 
                       type="text" 
+                      name="companyName"
                       placeholder="Your company"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select name="industry" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                       <option>Select industry</option>
                       <option>Healthcare</option>
                       <option>SaaS</option>
@@ -808,15 +849,17 @@ function App() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Biggest Marketing Challenge *</label>
                   <textarea 
+                    name="biggestChallenge"
                     placeholder="What's your biggest marketing challenge right now?"
                     rows={4}
+                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   ></textarea>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Timeline to Get Started</label>
-                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select name="timeline" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option>Select timeline</option>
                     <option>Immediately</option>
                     <option>Within 1 month</option>
@@ -827,12 +870,23 @@ function App() {
 
                 <button 
                   type="submit"
+                  disabled={isSubmitting}
                   className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
                 >
-                  <span>Book My Free Strategy Call</span>
+                  <span>{isSubmitting ? 'Submitting...' : 'Book My Free Strategy Call'}</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </form>
+
+              {submitMessage && (
+                <div className={`mt-4 p-4 rounded-lg ${
+                  submitMessage.includes('Thank you') 
+                    ? 'bg-green-50 text-green-800 border border-green-200' 
+                    : 'bg-red-50 text-red-800 border border-red-200'
+                }`}>
+                  {submitMessage}
+                </div>
+              )}
 
               <p className="text-xs text-gray-500 mt-4">
                 By submitting this form, you agree to receive marketing communications. Unsubscribe at any time.
