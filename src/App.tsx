@@ -803,14 +803,14 @@ function App() {
               <span className="text-yellow-300">AI Marketing Empire</span>
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Book a free 30-minute strategy call where we'll analyze your current marketing, identify growth opportunities, and create a custom AI roadmap for your business.
+              Book a 30-minute strategy call where we'll analyze your current marketing, identify growth opportunities, and create a custom AI roadmap for your business.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Contact Form */}
             <div className="bg-white p-8 rounded-2xl shadow-xl">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Book Your Free Strategy Call</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Book Your Strategy Call Now</h3>
               <p className="text-gray-600 mb-8">Fill out this form and I'll personally reach out within 24 hours</p>
               
               <form className="space-y-6" onSubmit={handleFormSubmit}>
@@ -888,7 +888,7 @@ function App() {
                   disabled={isSubmitting}
                   className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
                 >
-                  <span>{isSubmitting ? 'Submitting...' : 'Book My Free Strategy Call'}</span>
+                  <span>{isSubmitting ? 'Submitting...' : 'Book My Strategy Call'}</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </form>
@@ -1031,7 +1031,7 @@ function App() {
             <div className="flex flex-col lg:flex-row items-center justify-between">
               <div>
                 <h3 className="text-2xl font-semibold mb-2">Ready to Accelerate Your Growth?</h3>
-                <p className="text-gray-400">Book your free, no-obligation strategy call today.</p>
+                <p className="text-gray-400">Book your no-obligation strategy call today.</p>
               </div>
               <button
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
