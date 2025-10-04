@@ -31,6 +31,7 @@ import {
   ChevronRight,
   ChevronLeft
 } from 'lucide-react';
+import ContactForm from './components/ContactForm';
 
 function App() {
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
