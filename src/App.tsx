@@ -1,5 +1,4 @@
 import React from 'react';
-import { supabase, type ContactSubmission } from './lib/supabase';
 import { 
   Calendar,
   CheckCircle,
@@ -31,12 +30,9 @@ import {
   ChevronRight,
   ChevronLeft
 } from 'lucide-react';
-import ContactForm from './components/ContactForm';
 
 function App() {
   const [currentTestimonial, setCurrentTestimonial] = React.useState(0);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [submitMessage, setSubmitMessage] = React.useState('');
 
   const testimonials = [
     {
@@ -81,39 +77,6 @@ function App() {
     const interval = setInterval(nextTestimonial, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitMessage('');
-
-    const formData = new FormData(e.currentTarget);
-    const submission: Omit<ContactSubmission, 'id' | 'created_at'> = {
-      full_name: formData.get('fullName') as string,
-      email: formData.get('email') as string,
-      company_name: formData.get('companyName') as string || undefined,
-      industry: formData.get('industry') as string || undefined,
-      biggest_challenge: formData.get('biggestChallenge') as string,
-      timeline: formData.get('timeline') as string || undefined,
-    };
-
-    try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([submission]);
-
-      if (error) throw error;
-
-      setSubmitMessage('Thank you! Your strategy call request has been submitted. I\'ll reach out within 24 hours.');
-      (e.target as HTMLFormElement).reset();
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitMessage('Sorry, there was an error submitting your request. Please try again or contact me directly.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -212,7 +175,7 @@ function App() {
             </span>
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-12 items-start">
             <div>
               <h2 className="text-5xl font-bold text-gray-900 mb-6">
                 Your AI Marketing<br />
@@ -239,68 +202,65 @@ function App() {
 
             </div>
 
-            {/* Right Column - Stats Grid and Core Expertise */}
-            <div>
-              {/* Stats Grid */}
-              <div className="grid grid-cols-2 gap-6 mb-12">
-                <div className="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <Users className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">6+</div>
-                  <div className="text-gray-600 text-sm">Years Experience</div>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-6">
+              <div className="bg-blue-50 p-6 rounded-2xl text-center">
+                <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <Users className="w-6 h-6 text-white" />
                 </div>
-                
-                <div className="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <Building2 className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">200+</div>
-                  <div className="text-gray-600 text-sm">Businesses Helped</div>
-                </div>
-                
-                <div className="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <DollarSign className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">50M+</div>
-                  <div className="text-gray-600 text-sm">Revenue Generated</div>
-                </div>
-                
-                <div className="bg-white p-6 rounded-2xl text-center shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <TrendingUp className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-gray-900 mb-2">300%</div>
-                  <div className="text-gray-600 text-sm">Avg ROI Increase</div>
-                </div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">6+</div>
+                <div className="text-gray-600 text-sm">Years Experience</div>
               </div>
-
-              {/* Core Expertise */}
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">Core Expertise</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">AI-Powered Marketing Automation</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">Data-Driven Growth Strategies</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">Advanced SEO & Content Systems</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">Conversion Rate Optimization</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">Multi-Channel Campaign Management</span>
-                  </div>
+              
+              <div className="bg-purple-50 p-6 rounded-2xl text-center">
+                <div className="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <Building2 className="w-6 h-6 text-white" />
                 </div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">200+</div>
+                <div className="text-gray-600 text-sm">Businesses Helped</div>
+              </div>
+              
+              <div className="bg-green-50 p-6 rounded-2xl text-center">
+                <div className="w-12 h-12 bg-green-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <DollarSign className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-green-600 mb-2">50M+</div>
+                <div className="text-gray-600 text-sm">Revenue Generated</div>
+              </div>
+              
+              <div className="bg-orange-50 p-6 rounded-2xl text-center">
+                <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center mb-4 mx-auto">
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-orange-600 mb-2">300%</div>
+                <div className="text-gray-600 text-sm">Avg ROI Increase</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Core Expertise */}
+          <div className="mt-16">
+            <h3 className="text-2xl font-semibold text-gray-900 mb-8 text-center">Core Expertise</h3>
+            <div className="grid md:grid-cols-5 gap-6">
+              <div className="text-center">
+                <div className="w-3 h-3 bg-blue-600 rounded-full mb-3 mx-auto"></div>
+                <span className="text-gray-700 text-sm">AI-Powered Marketing Automation</span>
+              </div>
+              <div className="text-center">
+                <div className="w-3 h-3 bg-blue-600 rounded-full mb-3 mx-auto"></div>
+                <span className="text-gray-700 text-sm">Data-Driven Growth Strategies</span>
+              </div>
+              <div className="text-center">
+                <div className="w-3 h-3 bg-blue-600 rounded-full mb-3 mx-auto"></div>
+                <span className="text-gray-700 text-sm">Advanced SEO & Content Systems</span>
+              </div>
+              <div className="text-center">
+                <div className="w-3 h-3 bg-blue-600 rounded-full mb-3 mx-auto"></div>
+                <span className="text-gray-700 text-sm">Conversion Rate Optimization</span>
+              </div>
+              <div className="text-center">
+                <div className="w-3 h-3 bg-blue-600 rounded-full mb-3 mx-auto"></div>
+                <span className="text-gray-700 text-sm">Multi-Channel Campaign Management</span>
               </div>
             </div>
           </div>
@@ -799,15 +759,13 @@ function App() {
               <h3 className="text-2xl font-semibold text-gray-900 mb-6">Book Your Free Strategy Call</h3>
               <p className="text-gray-600 mb-8">Fill out this form and I'll personally reach out within 24 hours</p>
               
-              <form className="space-y-6" onSubmit={handleFormSubmit}>
+              <form className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                     <input 
                       type="text" 
-                      name="fullName"
                       placeholder="Your full name"
-                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -815,9 +773,7 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
                     <input 
                       type="email" 
-                      name="email"
                       placeholder="you@email.com"
-                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
@@ -828,14 +784,13 @@ function App() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
                     <input 
                       type="text" 
-                      name="companyName"
                       placeholder="Your company"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                    <select name="industry" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                       <option>Select industry</option>
                       <option>Healthcare</option>
                       <option>SaaS</option>
@@ -850,17 +805,15 @@ function App() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Biggest Marketing Challenge *</label>
                   <textarea 
-                    name="biggestChallenge"
                     placeholder="What's your biggest marketing challenge right now?"
                     rows={4}
-                    required
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   ></textarea>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Timeline to Get Started</label>
-                  <select name="timeline" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                  <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     <option>Select timeline</option>
                     <option>Immediately</option>
                     <option>Within 1 month</option>
@@ -871,23 +824,12 @@ function App() {
 
                 <button 
                   type="submit"
-                  disabled={isSubmitting}
                   className="w-full bg-blue-600 text-white py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
                 >
-                  <span>{isSubmitting ? 'Submitting...' : 'Book My Free Strategy Call'}</span>
+                  <span>Book My Free Strategy Call</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </form>
-
-              {submitMessage && (
-                <div className={`mt-4 p-4 rounded-lg ${
-                  submitMessage.includes('Thank you') 
-                    ? 'bg-green-50 text-green-800 border border-green-200' 
-                    : 'bg-red-50 text-red-800 border border-red-200'
-                }`}>
-                  {submitMessage}
-                </div>
-              )}
 
               <p className="text-xs text-gray-500 mt-4">
                 By submitting this form, you agree to receive marketing communications. Unsubscribe at any time.
