@@ -15,3 +15,4 @@ export type ContactFormSubmission = {
   timeline?: string
   status?: string
   created_at?: string
+}
