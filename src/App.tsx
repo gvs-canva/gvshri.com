@@ -128,7 +128,10 @@ function App() {
             <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
               6+ Years Digital Marketing Excellence
             </div>
-            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center space-x-2">
+            <button
+              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
               <Calendar className="w-4 h-4" />
               <span>Book Strategy Call</span>
             </button>
@@ -181,11 +184,17 @@ function App() {
 
           {/* CTAs */}
           <div className="flex justify-center items-center space-x-4 mb-12">
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2">
+            <button
+              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2"
+            >
               <span>Book Your Strategy Call Now</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button className="text-gray-700 px-8 py-4 border border-gray-200 rounded-xl font-semibold hover:bg-gray-50 transition-colors">
+            <button
+              onClick={() => document.getElementById('ai-tools')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-gray-700 px-8 py-4 border border-gray-200 rounded-xl font-semibold hover:bg-gray-50 transition-colors"
+            >
               View My AI Tools
             </button>
           </div>
@@ -421,7 +430,10 @@ function App() {
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
               Let's discuss your specific needs and create a custom solution that delivers measurable results for your business.
             </p>
-            <button className="bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center space-x-2 mx-auto">
+            <button
+              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-gray-900 text-white px-8 py-4 rounded-xl font-semibold hover:bg-gray-800 transition-colors flex items-center space-x-2 mx-auto"
+            >
               <span>Discuss Your Needs</span>
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -430,7 +442,7 @@ function App() {
       </section>
 
       {/* Portfolio Section */}
-      <section className="py-20 bg-white">
+      <section id="ai-tools" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="flex justify-center mb-6">
@@ -570,7 +582,10 @@ function App() {
           </div>
 
           <div className="text-center mt-16">
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2 mx-auto">
+            <button
+              onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2 mx-auto"
+            >
               <span>Start Your Success Story</span>
               <ArrowRight className="w-5 h-5" />
             </button>
@@ -775,7 +790,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+      <section id="contact-form" className="py-20 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="flex justify-center mb-6">
@@ -1018,7 +1033,10 @@ function App() {
                 <h3 className="text-2xl font-semibold mb-2">Ready to Accelerate Your Growth?</h3>
                 <p className="text-gray-400">Book your free, no-obligation strategy call today.</p>
               </div>
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2 mt-6 lg:mt-0">
+              <button
+                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center space-x-2 mt-6 lg:mt-0"
+              >
                 <Calendar className="w-5 h-5" />
                 <span>Book Strategy Call</span>
               </button>
