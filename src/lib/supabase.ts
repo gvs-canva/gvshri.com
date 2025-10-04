@@ -5,7 +5,7 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-export type ContactSubmission = {
+export type ContactFormSubmission = {
   id?: string
   full_name: string
   email: string
@@ -15,4 +15,3 @@ export type ContactSubmission = {
   timeline?: string
   status?: string
   created_at?: string
-}
